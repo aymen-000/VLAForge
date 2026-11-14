@@ -2,9 +2,9 @@
 
 import json
 
+from PIL import Image
 import pytest
 import torch
-from PIL import Image
 
 from vlaforge.core import ActionSpec
 from vlaforge.data import (
@@ -28,6 +28,19 @@ def test_action_normalizer_handles_constant_dimensions() -> None:
     normalizer = ActionNormalizer.from_actions(torch.tensor([[2.0], [2.0]]))
 
     assert torch.isfinite(normalizer.normalize(torch.tensor([[2.0]]))).all()
+
+
+def test_action_normalizer_saves_and_loads(tmp_path) -> None:
+    normalizer = ActionNormalizer(
+        mean=torch.tensor([1.0, 2.0]), std=torch.tensor([3.0, 4.0])
+    )
+    path = tmp_path / "normalization.json"
+
+    normalizer.save(path)
+    restored = ActionNormalizer.load(path)
+
+    assert torch.equal(restored.mean, normalizer.mean)
+    assert torch.equal(restored.std, normalizer.std)
 
 
 def test_image_transform_converts_and_resizes() -> None:

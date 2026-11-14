@@ -31,3 +31,25 @@ class VLABatch:
             raise ValueError("attention_mask must have the same shape as input_ids")
         if self.actions is not None and self.actions.ndim < 2:
             raise ValueError("actions must include a batch dimension")
+
+    def to(self, device: torch.device | str, non_blocking: bool = False) -> "VLABatch":
+        """Return a copy with all model tensors moved to ``device``."""
+        return VLABatch(
+            images={
+                name: tensor.to(device=device, non_blocking=non_blocking)
+                for name, tensor in self.images.items()
+            },
+            input_ids=self.input_ids.to(device=device, non_blocking=non_blocking),
+            attention_mask=self.attention_mask.to(device=device, non_blocking=non_blocking),
+            actions=(
+                self.actions.to(device=device, non_blocking=non_blocking)
+                if self.actions is not None
+                else None
+            ),
+            proprioception=(
+                self.proprioception.to(device=device, non_blocking=non_blocking)
+                if self.proprioception is not None
+                else None
+            ),
+            metadata=self.metadata,
+        )

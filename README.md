@@ -6,7 +6,7 @@
 [![Documentation](https://img.shields.io/badge/Docs-MkDocs_Material-526CFE)](docs/website.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
 
-![VLAForge framework overview](docs/images/logo.png)
+![VLAForge framework overview](docs/images/Screenshot%20from%202026-11-14%2023-34-36.png)
 
 VLAForge is a modular Python framework for building Vision-Language-Action
 models. It provides shared interfaces and data structures so model, dataset,
@@ -89,21 +89,11 @@ The synthetic workflow in `examples/synthetic_vla_workflow.py` demonstrates
 training, checkpoint reload, action prediction, and evaluation without
 downloading pretrained models or datasets.
 
-## Installation and development
+## Installation
 
-Create and activate a virtual environment, then install the package and its
-development tools:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -e ".[dev]"
-```
-
-See [installation notes](docs/installation.md) for CPU, CUDA, Kaggle, and
-Windows guidance. See the [API guide](docs/api.md) for public interfaces and
-tensor shapes.
+See the [installation guide](docs/installation.md) for requirements and setup
+instructions, including CPU, CUDA, Kaggle, and Windows environments. The
+[API guide](docs/api.md) documents public interfaces and tensor shapes.
 
 ## Quick-start example
 
@@ -117,14 +107,9 @@ python examples/synthetic_vla_workflow.py
 More walkthroughs are in [Getting started](docs/getting_started.md) and the
 [training](docs/training.md) and [inference](docs/inference.md) guides.
 
-See [dataset documentation](docs/datasets.md), the [public API reference](docs/api.md),
-and [contribution guidelines](CONTRIBUTING.md) for more detail.
-
-## Documentation website
-
-Preview the docs locally with `python -m pip install -r docs/requirements.txt`
-followed by `mkdocs serve`. To publish them on GitHub Pages, set the repository
-Pages source to **GitHub Actions**; see [website deployment](docs/website.md).
+See the [dataset guide](docs/datasets.md) and [public API reference](docs/api.md)
+for more detail. The [documentation site guide](docs/website.md) explains how
+the user guides are organized.
 
 ## License
 

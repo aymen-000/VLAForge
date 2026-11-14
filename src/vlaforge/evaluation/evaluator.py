@@ -1,7 +1,6 @@
 """Offline dataset evaluation for any ``BaseVLA`` model."""
 
 from collections.abc import Callable
-from pathlib import Path
 from typing import Any
 
 import torch

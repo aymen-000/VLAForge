@@ -6,7 +6,7 @@
 [![Documentation](https://img.shields.io/badge/Docs-MkDocs_Material-526CFE)](docs/website.md)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
 
-![VLAForge framework overview](docs/images/Screenshot%20from%202026-11-14%2023-34-36.png)
+![VLAForge framework overview](docs/images/logo.png)
 
 VLAForge is a modular Python framework for building Vision-Language-Action
 models. It provides shared interfaces and data structures so model, dataset,

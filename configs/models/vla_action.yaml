@@ -1,0 +1,12 @@
+model:
+  name: vla_action
+  vision_feature_dim: 512
+  language_feature_dim: 512
+  action_spec:
+    dimensions: 7
+    representation: continuous
+    normalized: false
+  hidden_dim: 512
+  dropout: 0.1
+  camera_name: front
+  freeze_encoders: true

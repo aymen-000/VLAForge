@@ -41,6 +41,12 @@ This page summarizes supported Python interfaces. All package imports use the
 - `VLAActionModel(vision_encoder, language_encoder, config, tokenizer=None,
   image_transform=None, text_transform=None)`: fuses encoder features and
   predicts continuous actions.
+- `build_model(config, **components)`: build a registered model from a mapping
+  or YAML path. The `vla_action` config uses `vision_feature_dim`,
+  `language_feature_dim`, and an `action_spec` mapping. Supply
+  `vision_encoder` and `language_encoder` as keyword components; optional
+  tokenizer and transforms can also be supplied. VLAForge does not download
+  or choose pretrained encoders automatically.
 - `save_pretrained(directory)` and `VLAActionModel.from_pretrained(directory,
   vision_encoder=..., language_encoder=..., tokenizer=...)`: save and restore
   VLAForge weights/config. Encoder modules are constructed by the application.

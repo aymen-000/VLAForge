@@ -233,6 +233,36 @@ class VLAActionModel(BaseVLA):
         """Return the configured output action specification."""
         return self.config.action_spec
 
+    @classmethod
+    def from_config(
+        cls,
+        config: Mapping[str, Any],
+        *,
+        vision_encoder: nn.Module,
+        language_encoder: nn.Module,
+        tokenizer: Callable[..., dict[str, Any]] | None = None,
+        image_transform: Callable[[Any], torch.Tensor] | None = None,
+        text_transform: Callable[[list[str]], Mapping[str, Any]] | None = None,
+    ) -> "VLAActionModel":
+        """Build a model from its architecture settings and injected modules."""
+        values = dict(config)
+        action_data = values.get("action_spec")
+        if not isinstance(action_data, Mapping):
+            raise ValueError("vla_action config must include an action_spec mapping")
+        try:
+            values["action_spec"] = ActionSpec(**dict(action_data))
+            architecture_config = VLAActionConfig(**values)
+        except (TypeError, ValueError) as error:
+            raise ValueError(f"invalid vla_action model config: {error}") from error
+        return cls(
+            vision_encoder=vision_encoder,
+            language_encoder=language_encoder,
+            config=architecture_config,
+            tokenizer=tokenizer,
+            image_transform=image_transform,
+            text_transform=text_transform,
+        )
+
     def save_pretrained(self, directory: str | Path) -> None:
         """Save weights and architecture configuration for later reconstruction.
 

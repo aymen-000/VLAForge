@@ -25,6 +25,11 @@ This page summarizes supported Python interfaces. All package imports use the
 - `BaseVLADataset`: dataset interface with `get_statistics()` and
   `get_action_spec()` in addition to PyTorch dataset methods.
 - `CustomVLADataset(root, action_spec)`: JSON Lines manifest adapter.
+- `LeRobotDatasetAdapter(action_spec, repo_id=None, field_mapping=None, ...)`:
+  optional adapter for LeRobot 0.4.x datasets. Install the `lerobot` extra to
+  construct from a repository ID. `LeRobotFieldMapping` maps camera, task,
+  action, proprioception, and episode fields. `split_by_episode()` creates
+  episode-disjoint train and validation subsets.
 - `VLACollator(tokenizer=None, image_transform=None, text_transform=None,
   action_transform=None)`: creates `VLABatch` objects.
 - `ImageTransform(size=(224,224), mean=(0.5,)*3, std=(0.5,)*3)`: converts an

@@ -35,6 +35,40 @@ ruff check src tests examples --select F
 python -m pytest
 ```
 
+## Test organization and optional integrations
+
+Keep fast, isolated tests in `tests/unit/`. Put tests that connect VLAForge to
+real optional packages or external data formats in `tests/integration/`.
+Unit tests should use small fixtures and must not need network access or
+downloaded datasets. The normal `pytest` command discovers both directories;
+opt-in integration tests should skip when their dependencies or configuration
+are not present.
+
+The LeRobot integration test is opt-in. Install the optional dependency and
+set a dataset repository ID to run it:
+
+```bash
+python -m pip install -e ".[dev,lerobot]"
+export VLAFORGE_LEROBOT_REPO_ID="lerobot/xarm_lift_medium_image"
+python -m pytest tests/integration/test_lerobot_integration.py
+```
+
+The suggested dataset is a small image dataset (78.8 MB total on the Hub).
+The test opens its first two episodes. LeRobot may download complete underlying
+data or video chunks for those episodes, rather than only the selected frames,
+if they are not already cached. Set `VLAFORGE_LEROBOT_ROOT` to use a local
+dataset directory.
+The action, task, and proprioception field names can be overridden with
+`VLAFORGE_LEROBOT_ACTION_FIELD`, `VLAFORGE_LEROBOT_TASK_FIELD`, and
+`VLAFORGE_LEROBOT_PROPRIOCEPTION_FIELD`.
+
+In Windows PowerShell, set the repository ID with:
+
+```powershell
+$env:VLAFORGE_LEROBOT_REPO_ID = "lerobot/xarm_lift_medium_image"
+python -m pytest tests/integration/test_lerobot_integration.py
+```
+
 Some ROS installations expose unrelated pytest plugins through the active
 environment. If pytest fails while importing a ROS plugin before collecting
 VLAForge tests, run:

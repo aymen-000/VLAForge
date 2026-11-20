@@ -65,3 +65,50 @@ Validation data must not be used to fit statistics.
 For a new adapter, implement `BaseVLADataset`, return the sample keys above,
 provide an `ActionSpec`, and cover loading and validation behavior with small
 synthetic tests.
+
+## LeRobot datasets
+
+Install the optional integration with `pip install -e '.[lerobot]'`. The base
+VLAForge install does not import or require LeRobot. The optional extra pins
+LeRobot 0.4.x, which supports Python 3.10. The adapter opens datasets lazily:
+
+```python
+from vlaforge.core import ActionSpec
+from vlaforge.data import LeRobotDatasetAdapter, LeRobotFieldMapping
+
+dataset = LeRobotDatasetAdapter(
+    repo_id="lerobot/your_dataset",
+    action_spec=ActionSpec(dimensions=7),
+    field_mapping=LeRobotFieldMapping(
+        camera_fields={"front": "observation.images.front"},
+        task_field="task_index",
+        action_field="action",
+        proprioception_field="observation.state",
+    ),
+)
+sample = dataset[0]
+```
+
+If camera keys are present in LeRobot metadata, `camera_fields` can be omitted
+and the adapter infers them. The task, action, proprioception, and episode
+field names can be changed to match a dataset. Supply an `ActionSpec` yourself
+because feature dimensions do not identify physical units or coordinate frame.
+
+`get_statistics()` computes action statistics over the adapter's selected
+frames. Pass frame indices to compute statistics for a training subset only.
+It reads an action-only column view when the LeRobot backend supports it;
+otherwise it scans samples and may decode images.
+`split_by_episode(validation_fraction=0.2, seed=42)` returns train and
+validation `Subset`s with complete episodes kept together; it requires episode
+range metadata. To fit normalization only on the training episodes:
+
+```python
+from vlaforge.data import ActionNormalizer
+
+train_data, validation_data = dataset.split_by_episode(seed=42)
+statistics = dataset.get_statistics(indices=train_data.indices)
+normalizer = ActionNormalizer(
+    statistics["action_mean"],
+    statistics["action_std"],
+)
+```
